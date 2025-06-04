@@ -1,9 +1,10 @@
 const generateAnagram = require('../generateAnagram');
 
-test('generateAnagram returns a string containing the same letters as the input', () => {
-  const word = 'listen';
+test('generateAnagram returns all unique anagrams of the input word', () => {
+  const word = 'abc';
   const result = generateAnagram(word);
-  expect(typeof result).toBe('string');
-  expect(result.length).toBe(word.length);
-  expect(result.split('').sort().join('')).toBe(word.split('').sort().join(''));
+
+  expect(Array.isArray(result)).toBe(true);
+  const expected = ['abc', 'acb', 'bac', 'bca', 'cab', 'cba'];
+  expect(result.sort()).toEqual(expected.sort());
 });

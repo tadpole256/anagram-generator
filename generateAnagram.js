@@ -2,11 +2,23 @@ function generateAnagram(word) {
   if (typeof word !== 'string') {
     throw new TypeError('word must be a string');
   }
-  const chars = word.split('');
-  for (let i = chars.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [chars[i], chars[j]] = [chars[j], chars[i]];
+
+  const results = new Set();
+
+  function permute(prefix, remaining) {
+    if (remaining.length === 0) {
+      results.add(prefix);
+      return;
+    }
+
+    for (let i = 0; i < remaining.length; i++) {
+      permute(prefix + remaining[i], remaining.slice(0, i) + remaining.slice(i + 1));
+    }
   }
-  return chars.join('');
+
+  permute('', word);
+
+  return Array.from(results);
 }
+
 module.exports = generateAnagram;
