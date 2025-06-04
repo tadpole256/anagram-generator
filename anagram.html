@@ -64,33 +64,37 @@
         <p id="result"></p>
     </div>
     <script>
-      // Function to generate an anagram
+      // Generate all unique anagrams of a word
+      function generateAllAnagrams(word) {
+        const results = new Set();
+
+        function permute(prefix, remaining) {
+          if (remaining.length === 0) {
+            results.add(prefix);
+            return;
+          }
+
+          for (let i = 0; i < remaining.length; i++) {
+            permute(prefix + remaining[i], remaining.slice(0, i) + remaining.slice(i + 1));
+          }
+        }
+
+        permute('', word);
+        return Array.from(results);
+      }
+
+      // Function called when clicking "Generate"
       function generateAnagram() {
         var inputWord = document.getElementById("input-word").value;
         var result = document.getElementById("result");
 
-        // Check if input is empty
         if (inputWord === "") {
           result.textContent = "Please enter a word";
           return;
         }
 
-        // Split the word into an array of characters
-        var chars = inputWord.split("");
-
-        // Shuffle the characters using the Fisher–Yates algorithm
-        for (var i = chars.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var temp = chars[i];
-          chars[i] = chars[j];
-          chars[j] = temp;
-        }
-
-        // Join the sorted characters back into a string
-        var anagram = chars.join("");
-
-        // Display the anagram
-        result.textContent = "Anagram: " + anagram;
+        var anagrams = generateAllAnagrams(inputWord);
+        result.innerHTML = "Anagrams:<br>" + anagrams.join(', ');
       }
     </script>
   </body>
